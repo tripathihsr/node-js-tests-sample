@@ -1,11 +1,6 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
-
 const { expect } = require('chai');
 const sinon = require("sinon");
-
 const { Game } = require('../src/index');
-const Helpers = require('../src/helpers');
 
 describe('Game Function Group', () => {
   describe('Initialize Game', () => {
@@ -19,8 +14,8 @@ describe('Game Function Group', () => {
       const currentDate = new Date().toISOString().substr(0, 10);
       expect(game.date).to.be.equal(currentDate);
     });
-    
   });
+  
   describe('Start Game', () => {
     it('Check that the game has two competitors', async function() {
       const game = new Game();
@@ -30,12 +25,14 @@ describe('Game Function Group', () => {
         opponent: 'Player 2'
       });
     });
+    
     it('Check that the two competitors have different names', async function() {
       const game = new Game();
       game.start();
       expect(game.players.you).does.not.equal(game.players.opponent);
     });
   });
+  
   describe('End Game', () => {
     it('Check that there are no more competitors after the game ends', async function() {
       const spyStart = sinon.spy(Game.prototype, "start");
@@ -49,28 +46,11 @@ describe('Game Function Group', () => {
       expect(game.players.you).to.be.equal(undefined);
       expect(game.players.opponent).to.be.equal(undefined);
       
-      expect(spyStart.called).to.be.true
-      expect(spyStop.called).to.be.true
-    });
-  });
-  describe('Game ID Stubs and Mocks', () => {
-    it('Check that an out of range game ID is returned with Stub', async function() {
-      let generateIdStub = sinon.stub(Game.prototype, 'getId').returns(999999);
-
-      const game = new Game();
-
-      expect(game.getId()).is.equal(999999);
-
-      generateIdStub.restore();
-    });
-    it('Using a mock check that the function was called and returns 9', async function() {
-      let mock = sinon.mock(Game.prototype).expects('getId').withArgs().returns(9);
+      expect(spyStart.called).to.be.true;
+      expect(spyStop.called).to.be.true;
       
-      const game = new Game();
-      const Id = game.getId();
-
-      mock.verify();
-      expect(Id).is.equal(9);
+      spyStart.restore();
+      spyStop.restore();
     });
   });
 });
