@@ -3,20 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 16
+      nodejs: 16  # Adjust version as needed
     commands:
       - echo Installing dependencies...
-      - npm ci
+      - npm install
+      - npm install --save-dev mocha-junit-reporter  # Install JUnit reporter for Mocha
 
   pre_build:
     commands:
       - echo Setting up test environment...
-      - mkdir -p ./test-reports
 
   build:
     commands:
       - echo Running tests...
-      - npm test
+      - mkdir -p ./test-reports
+      - npx mocha --reporter mocha-junit-reporter --reporter-options mochaFile=./test-reports/test-results.xml
 
   post_build:
     commands:
@@ -24,21 +25,14 @@ phases:
       - ls -la ./test-reports
 
 reports:
-  test-reports:
+  test_reports:
     files:
-      - "test-results.xml"
-    base-directory: "./test-reports"
-    file-format: "JUNITXML"
+      - test-results.xml
+    base-directory: ./test-reports
+    file-format: JUNITXML
 
 artifacts:
   files:
-    - package.json
-    - package-lock.json
-    - "src/**/*"
-    - "test/**/*"
-    - "test-reports/**/*"
-  base-directory: "."
-
-cache:
-  paths:
+    - '**/*'
+  exclude-paths:
     - 'node_modules/**/*'
