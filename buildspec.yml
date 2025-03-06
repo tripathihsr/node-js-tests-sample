@@ -21,7 +21,7 @@ phases:
   post_build:
     commands:
       - echo Tests completed on `date`
-      - echo Test results:
+      - echo Test results
       - ls -la ./test-reports || echo "No test reports found"
 
 reports:
