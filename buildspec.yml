@@ -20,9 +20,8 @@ phases:
 
   post_build:
     commands:
-      - echo Tests completed on 'date'
-      - echo Test results
-      - ls -la ./test-reports || echo "No test reports found"
+      - echo "Tests and coverage report completed on `date`"
+      - ls -la ./test-reports
 
 reports:
   test-reports:
