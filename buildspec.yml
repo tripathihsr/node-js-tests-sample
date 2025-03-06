@@ -16,7 +16,7 @@ phases:
     commands:
       - echo Running Tests
       - npm test
-      - npx mocha --reporter mocha-multi-reporters --reporter-options configFile=reporter-config.json "**/*.js"
+      - npx mocha --reporter-options configFile=reporter-config.json "**/*.js"
       
   post_build:
     commands:
