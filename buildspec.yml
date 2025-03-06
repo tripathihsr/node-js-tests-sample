@@ -9,10 +9,37 @@ phases:
     commands:
       - echo Installing source NPM dependencies...
       - npm install
+      - npm install -g mocha-junit-reporter mocha-multi-reporters
+      - npm install
+      - mkdir -p ./test-reports
   build:
     commands:
       - echo Running Tests
       - npm test
+      - npx mocha --reporter mocha-multi-reporters --reporter-options configFile=reporter-config.json "**/*.js"
+      
   post_build:
     commands:
       - echo Tests Complete
+      - echo Test Report Generated at $(date)
+      - ls -la ./test-reports
+reports:
+  mocha-reports:
+    files:
+      - "test-results.xml"
+    base-directory: "./test-reports"
+    file-format: "JUNITXML"
+
+artifacts:
+  files:
+    - package.json
+    - package-lock.json
+    - appspec.yml
+    - "**/*"
+  base-directory: "."
+  secondary-artifacts:
+    test_reports:
+      files:
+        - "test-results.xml"
+        - "**/*.xml"
+      base-directory: "./test-reports"
