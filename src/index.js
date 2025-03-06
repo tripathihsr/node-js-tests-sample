@@ -1,27 +1,27 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
-
-const { generateRandomNumber, getDate } = require('./helpers/index');
-
 class Game {
-    constructor() {
-        this.id = generateRandomNumber();
-        this.date = getDate();
-    }
-    start() {
-        this.players = {
-            you: 'Player 1',
-            opponent: 'Player 2'
-        };
-    }
-    getId() {
-        return this.id;
-    }
-    stop() {
-        this.players = {};
-    }
+  constructor() {
+    this.id = this.getId();
+    this.date = new Date().toISOString().substr(0, 10);
+    this.players = {};
+  }
+
+  getId() {
+    return Math.floor(Math.random() * 999) + 1;
+  }
+
+  start() {
+    this.players = {
+      you: 'Player 1',
+      opponent: 'Player 2'
+    };
+  }
+
+  stop() {
+    this.players = {
+      you: undefined,
+      opponent: undefined
+    };
+  }
 }
 
-module.exports = {
-    Game
-}
+module.exports = { Game };
